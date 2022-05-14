@@ -122,6 +122,8 @@ public class ComparisonFunctions {
 
 
                                 for (int periodIndex = 0; periodIndex < alternatives.getPeriods().size(); periodIndex++) {
+                                    int numOfMatchingAttributes = 0;
+                                    int numOfMismatchingAttributes = 0;
 
                                     int numOfValuesInIBZ = 0;
                                     for (String value : alternatives.getPeriods().get(periodIndex).getValues()) {
@@ -137,8 +139,6 @@ public class ComparisonFunctions {
 
                                     //Проход по значениям, если БЗ является подмножеством значений ИФБЗ
                                     if (numOfValuesInIBZ > numOfValuesInBZ) {
-                                        int numOfMatchingAttributes = 0;
-                                        int numOfMismatchingAttributes = 0;
 
                                         for (String firstValue : alternatives.getPeriods().get(periodIndex).getValues()) {
                                             boolean isMatching = false;
@@ -174,8 +174,6 @@ public class ComparisonFunctions {
 
                                     //Проход по значениям, если ИФБЗ является подмножеством значений БЗ
                                     if (numOfValuesInIBZ < numOfValuesInBZ) {
-                                        int numOfMatchingAttributes = 0;
-                                        int numOfMismatchingAttributes = 0;
 
                                         for (String secondValue : basicKnowledgeBase.get(diseaseIndex)
                                                 .getAttributeClasses().get(attributeIndex)
@@ -210,15 +208,37 @@ public class ComparisonFunctions {
                                     }
 
                                     if (numOfValuesInBZ == numOfValuesInIBZ) {
+
+                                        for (String secondValue : basicKnowledgeBase.get(diseaseIndex)
+                                                .getAttributeClasses().get(attributeIndex)
+                                                .getDynamicPeriodClasses().get(periodIndex).getValues()) {
+                                            boolean isMatching = false;
+
+                                            for (String firstValue : alternatives.getPeriods().get(periodIndex).getValues()) {
+
+                                                if (firstValue.equals(secondValue)) {
+                                                    isMatching = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (isMatching) {
+                                                numOfMatchingAttributes += 1;
+                                            } else {
+                                                numOfMismatchingAttributes += 1;
+                                            }
+                                        }
+
                                         System.out.println("|");
                                         System.out.println("|-->| Период динамики: " + (periodIndex + 1));
                                         System.out.println("|-->| БЗ: " + basicKnowledgeBase.get(diseaseIndex)
                                                 .getAttributeClasses().get(attributeIndex)
                                                 .getDynamicPeriodClasses().get(periodIndex).getValues());
                                         System.out.println("|-->| ИФБЗ: " + alternatives.getPeriods().get(periodIndex).getValues());
-                                        System.out.println("|-->| Степень совпадения: 100.0%");
-                                        globalMatchPeriodPercentage[attributeIndex][periodIndex] += 1;
+                                        System.out.println("|-->| Степень совпадения: " + (((float) (numOfMatchingAttributes) / (float) (numOfMatchingAttributes + numOfMismatchingAttributes)) * 100) + "%");
+                                        globalMatchPeriodPercentage[attributeIndex][periodIndex] += ((float) (numOfMatchingAttributes) / (float) (numOfMatchingAttributes + numOfMismatchingAttributes));
                                         globalMatchPeriodNum[attributeIndex][periodIndex] += 1;
+                                        //TODO некорректно работает глобальный подсчёт в этом месте, в результате...
                                     }
                                 }
 
@@ -247,6 +267,7 @@ public class ComparisonFunctions {
                             + (globalMatchPeriodPercentage[attributeIndex][periodIndex] * 100 / globalMatchPeriodNum[attributeIndex][periodIndex]) + "%");
                 }
                 System.out.println();
+                //TODO ...в результате не работает корректно вывод в этом месте
             }
         }
     }

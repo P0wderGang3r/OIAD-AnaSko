@@ -20,7 +20,7 @@ public class InitKnowledgeBase {
         String lText = "";
 
         try {
-            reader = new FileReader("/home/anasko/ForProjects/input/ValuesByPeriod.txt");
+            reader = new FileReader("ValuesByPeriod.txt");//TODO path to ValuesByPeriod.txt
         } catch (Exception e) {
             return "Error";
         }

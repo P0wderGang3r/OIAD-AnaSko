@@ -23,7 +23,7 @@ public class InitDataBase {
         String lText = "";
 
         try {
-            reader = new FileReader("/home/anasko/ForProjects/input/NumberOfObservations.txt");
+            reader = new FileReader("NumberOfObservations.txt");//TODO path to NumberOfObservations.txt
         } catch (Exception e) {
             return "Error";
         }
@@ -48,7 +48,7 @@ public class InitDataBase {
         String lText = "";
 
         try {
-            reader = new FileReader("/home/anasko/ForProjects/input/ObservationData.txt");
+            reader = new FileReader("ObservationData.txt");//TODO path to ObservationData.txt
         } catch (Exception e) {
             return "Error";
         }

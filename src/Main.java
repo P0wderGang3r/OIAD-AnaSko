@@ -1,3 +1,4 @@
+import bz_ifbz_comparison.ComparisonFunctions;
 import functions.*;
 import functions.inductive_alternatives_classes.HistoryInductiveClass;
 
@@ -22,7 +23,7 @@ public class Main {
         InitInductiveBase.initInductiveBase(alternativesForHistories);
         FilterInductiveBase.equalInNeighborFilter(ProgramGlobals.getInductiveKnowledgeBase());
         FilterInductiveBase.emptyAlternativeByNumFilter(ProgramGlobals.getInductiveKnowledgeBase());
-        //GlobalLogs.writeInductiveBase(ProgramGlobals.getInductiveKnowledgeBase());
+        GlobalLogs.writeInductiveBase(ProgramGlobals.getInductiveKnowledgeBase());
 
         //ComparisonFunctions.compareOnNumOfPeriods();
         //ComparisonFunctions.showGlobalPercentage();
